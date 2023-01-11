@@ -1,115 +1,248 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      theme: ThemeData.light().copyWith(
+    primaryColor: Colors.white,
+    ),
+    home:const MyPortfoliopage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class MyPortfoliopage extends StatefulWidget {
+  const MyPortfoliopage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyPortfoliopage> createState() => _MyPortfoliopageState();
 }
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+class _MyPortfoliopageState extends State<MyPortfoliopage> {
+  double? _deviceWidth, _deviceHeight;
+  @override
+  Widget build(BuildContext context) {
+    _deviceWidth = MediaQuery.of(context).size.width;
+    _deviceHeight = MediaQuery.of(context).size.height;
+    print('width: $_deviceWidth');
+    print('height: $_deviceHeight');
+    return MaterialApp(
+      builder: (context, child) => ResponsiveWrapper.builder(
+          child,
+          maxWidth: 1400,
+          minWidth: 450,
+          defaultScale: true,
+          breakpoints: [
+            const ResponsiveBreakpoint.resize(450, name: MOBILE),
+            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            const ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+          ],
+          background: Container(color: const Color.fromARGB(0,0,0,0))),
+          initialRoute: "/",
+          home:Scaffold(
+            body:
+              IntrinsicHeight(
+                child: 
+                Row(
+                    children: [ 
+                      SideNavigation(),
+                      const VerticalDivider(thickness: 3, width: 0,color: Color.fromARGB(255, 0, 0, 0),),
+                      Expanded(child: SingleChildScrollView(
+                        child: Stack(
+                          children: [
+                            Container(color: Colors.yellow,height: 400,),
+                            Column(
+                              children: [
+                                _Keyvisual(),
+                                _CorectionPage(),
+                                _MyprofilePage(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),),
+                    ],
+                  ),
+    ),),
+    );
   }
+}
+// class BottomNavigation extends StatefulWidget{
+//   @override
+//     _BottomNavigationstate createState() => _BottomNavigationState();
+// }
+
+// class _BottomNavigationState extends State<SideNavigation>{
+  
+// }
+
+class SideNavigation extends StatefulWidget {
+  @override
+  _SideNavigationState createState() => _SideNavigationState();
+}
+class _SideNavigationState extends State<SideNavigation> {
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return Row(
+      children: [
+        NavigationRail(
+          labelType: NavigationRailLabelType.all,
+          selectedIconTheme: const IconThemeData(color: Color.fromARGB(255, 0, 0, 0)),
+          selectedLabelTextStyle: const TextStyle(color: Color.fromARGB(255, 36, 197, 255)),
+          unselectedIconTheme:const IconThemeData(color: Color.fromARGB(255, 0, 0, 0)),
+          unselectedLabelTextStyle:const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+          minWidth: 90,
+          destinations: [
+            NavigationRailDestination(
+              icon: Icon(Icons.expand_less,
+              color: Color.fromARGB(255, 0, 0, 0) ,
+              size: 30,),
+              label: Text('Top',
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'BM HANNA',
+                fontWeight: FontWeight.bold,
+              ),),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            const NavigationRailDestination(
+              icon: Icon(Icons.library_books,
+              color: Color.fromARGB(255, 0, 0, 0) ,
+              size: 30,),
+              label: Text('Corection',
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'BM HANNA',
+                fontWeight: FontWeight.bold,
+              ),),
+            ),
+            const NavigationRailDestination(
+              icon: Icon(Icons.face,
+              color: Color.fromARGB(255, 0, 0, 0) ,
+              size: 30,),
+              label: Text('Profile',
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'BM HANNA',
+                fontWeight: FontWeight.bold,
+              ),),
+            ),
+          ],
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+        ),
+        // SelectContent(index: selectedIndex)
+      ],
+    );
+  }
+}
+class SelectContent extends StatelessWidget {
+  const SelectContent({super.key, required this.index});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    const List<Widget> pages = [_Keyvisual(), _CorectionPage(), _MyprofilePage()];
+    if (pages.length <= index) {
+      return pages[0];
+    }
+    return pages[index];
+  }
+}
+
+class _Keyvisual extends StatelessWidget{
+  const _Keyvisual({super.key});
+  @override
+  Widget build(BuildContext context){
+    return 
+    Container(alignment: Alignment.centerLeft,width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 200, right: 50, bottom: 0, left: 80),
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              child:const FittedBox(fit: BoxFit.fitWidth,
+                child: Text('Flutter',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'BM HANNA',
+                  fontSize: 109,
+                  color: Color.fromARGB(255, 50, 200, 255) ,
+                ),),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: const FittedBox(fit: BoxFit.fitWidth,
+                child: Text('Portfolio',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'BM HANNA',
+                  fontSize: 100,
+                  color: Color.fromARGB(255, 0, 0, 0) ,
+                ),),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              child: const FittedBox(fit: BoxFit.fitWidth,
+                child: Text('''
+Flutterの勉強を始めた学生が、
+作ったものをただまとめているサイトです。
+''',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontFamily: 'nasu-b',
+                  fontSize: 24,
+                  ),),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class _CorectionPage extends StatelessWidget{
+  const _CorectionPage({super.key});
+  @override
+  Widget build(BuildContext context){
+    return Container(
+              height: 300,
+              color: Colors.blue,
+            );
+  }
+}
+
+class _MyprofilePage extends StatelessWidget{
+  const _MyprofilePage({super.key});
+  @override
+  Widget build(BuildContext context){
+    return Container(
+              height: 300,
+              color: Color.fromARGB(255, 137, 174, 203),
+            );
+    }
 }
