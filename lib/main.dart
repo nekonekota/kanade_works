@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
 import 'package:flutter/rendering.dart';
+import 'dart:math';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
@@ -64,7 +66,7 @@ class _MyPortfoliopageState extends State<MyPortfoliopage> {
                       Expanded(child: SingleChildScrollView(
                         child: Stack(
                           children: [
-                            Container(color: Colors.yellow,height: 400,),
+                            Transform.translate(offset: const Offset(-200.0,0.0),child: Transform.rotate(angle: -25 * pi / 180,/*ラジアンで角度を指定*/child: Container(margin: const EdgeInsets.only(top:0,left:0),color: Colors.yellow,height: 400,),)),
                             Column(
                               children: [
                                 _Keyvisual(),
@@ -175,52 +177,70 @@ class _Keyvisual extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return 
-    Container(alignment: Alignment.centerLeft,width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 200, right: 50, bottom: 0, left: 80),
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child:const FittedBox(fit: BoxFit.fitWidth,
-                child: Text('Flutter',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontFamily: 'BM HANNA',
-                  fontSize: 109,
-                  color: Color.fromARGB(255, 50, 200, 255) ,
-                ),),
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const FittedBox(fit: BoxFit.fitWidth,
-                child: Text('Portfolio',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontFamily: 'BM HANNA',
-                  fontSize: 100,
-                  color: Color.fromARGB(255, 0, 0, 0) ,
-                ),),
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const FittedBox(fit: BoxFit.fitWidth,
-                child: Text('''
+    Stack(
+      children: [
+        Align(alignment: Alignment.topCenter,
+          child: Container(
+          margin: const EdgeInsets.only(top:100),
+          width:800,
+          height: 500,
+          decoration: BoxDecoration(color: Colors.white,border: Border.all(color: Colors.black,width: 4)),
+          ),
+        ),
+        Container(margin: const EdgeInsets.only(top:150,left:80),
+        width:800,
+        height: 400,
+        color: Colors.white,
+        ),
+        Container(alignment: Alignment.centerLeft,width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 200, right: 50, bottom: 0, left: 120),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child:const FittedBox(fit: BoxFit.fitWidth,
+                    child: Text('Flutter',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'BM HANNA',
+                      fontSize: 109,
+                      color: Color.fromARGB(255, 50, 200, 255) ,
+                    ),),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: const FittedBox(fit: BoxFit.fitWidth,
+                    child: Text('Portfolio',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'BM HANNA',
+                      fontSize: 100,
+                      color: Color.fromARGB(255, 0, 0, 0) ,
+                    ),),
+                  ),
+                ),
+                Container(
+                  padding:const EdgeInsets.only(top:20) ,
+                  alignment: Alignment.centerLeft,
+                  child: const FittedBox(fit: BoxFit.fitWidth,
+                    child: Text('''
 Flutterの勉強を始めた学生が、
 作ったものをただまとめているサイトです。
 ''',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontFamily: 'nasu-b',
-                  fontSize: 24,
-                  ),),
-              ),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: 'nasu-b',
+                      fontSize: 24,
+                      ),),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
