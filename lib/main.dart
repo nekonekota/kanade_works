@@ -53,6 +53,7 @@ class _MyPortfoliopageState extends State<MyPortfoliopage> {
           ],
           background: Container(color: const Color.fromARGB(0,0,0,0))),
           initialRoute: "/",
+          ///
           home:Scaffold(
             body:
               IntrinsicHeight(
